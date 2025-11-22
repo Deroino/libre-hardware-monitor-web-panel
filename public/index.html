@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Libre Hardware Monitor Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="theme-cyber">
+    <div class="floating-controls">
+      <div class="theme-control">
+        <button class="icon-btn" id="themeToggle" aria-label="Themes" title="Themes">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 12a9 9 0 0 1 9-9v18a9 9 0 0 1-9-9Z" fill="currentColor" />
+            <path d="M12 3a9 9 0 1 1 0 18" stroke="currentColor" stroke-width="2" fill="none" />
+          </svg>
+        </button>
+        <div class="popover theme-panel" id="themePanel">
+          <label for="themeSelect">Skin</label>
+          <select id="themeSelect" class="compact-select">
+            <option value="cyber" selected>Neon</option>
+            <option value="midnight">Midnight</option>
+            <option value="orbit">Orbit</option>
+          </select>
+        </div>
+      </div>
+      <div class="settings-control">
+        <button class="icon-btn" id="settingsToggle" aria-label="Settings" title="Settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" fill="currentColor" />
+            <path
+              d="M5 5h2l1-2h8l1 2h2l1 4-2 1v4l2 1-1 4h-2l-1 2H8l-1-2H5l-1-4 2-1V10L4 9l1-4Z"
+              stroke="currentColor"
+              stroke-width="1.25"
+              fill="none"
+            />
+          </svg>
+        </button>
+        <div class="popover settings-panel" id="settingsPanel">
+          <div class="control">
+            <label for="refreshSlider">Refresh (s)</label>
+            <div class="slider-line">
+              <input
+                id="refreshSlider"
+                type="range"
+                min="2"
+                max="60"
+                step="1"
+                value="5"
+              />
+              <span id="refreshSliderValue">5s</span>
+            </div>
+          </div>
+          <div class="control">
+            <label for="refreshInput">Manual</label>
+            <div class="number-line">
+              <input
+                id="refreshInput"
+                type="number"
+                min="1"
+                max="600"
+                value="5"
+              />
+              <button id="refreshNow" class="ghost-btn">Sync</button>
+            </div>
+          </div>
+          <div class="control">
+            <label for="dataUrlInput">Endpoint</label>
+            <div class="number-line">
+              <input id="dataUrlInput" type="text" value="http://localhost:8085/data.json" />
+              <button id="applyDataUrl" class="ghost-btn">Set</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-shell">
+
+      <section class="gauges">
+        <article class="gauge-card" data-panel="cpu">
+          <div class="panel-header">
+            <div>
+              <h2>CPU</h2>
+            </div>
+            <span class="status-pill" data-field="cpuStatus">Idle</span>
+          </div>
+          <div class="gauge-shell">
+            <div class="gauge" data-gauge="cpu">
+              <strong data-field="cpuLoadValue">0%</strong>
+              <span data-field="cpuTemp">--</span>
+            </div>
+            <div class="readout-grid tight">
+              <div>
+                <span>Temp</span>
+                <strong data-field="cpuTemp">--</strong>
+              </div>
+              <div>
+                <span>Power</span>
+                <strong data-field="cpuPower">--</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="gauge-card" data-panel="gpu">
+          <div class="panel-header">
+            <div>
+              <h2>GPU</h2>
+            </div>
+            <span class="status-pill" data-field="gpuStatus">Idle</span>
+          </div>
+          <div class="gauge-shell">
+            <div class="gauge" data-gauge="gpu">
+              <strong data-field="gpuLoadValue">0%</strong>
+              <span data-field="gpuTemp">--</span>
+            </div>
+            <div class="readout-grid tight">
+              <div>
+                <span>Temp</span>
+                <strong data-field="gpuTemp">--</strong>
+              </div>
+              <div>
+                <span>Power</span>
+                <strong data-field="gpuPower">--</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="power-grid">
+        <article class="power-card">
+          <header>
+            <h3>Power</h3>
+          </header>
+          <div class="power-value" data-field="totalPower">--</div>
+          <div class="power-bars">
+            <div class="bar-line">
+              <span>CPU</span>
+              <div class="bar-shell">
+                <div class="bar-fill cpu" data-field="cpuPowerBar"></div>
+              </div>
+              <span class="bar-value" data-field="cpuPower">--</span>
+            </div>
+            <div class="bar-line">
+              <span>GPU</span>
+              <div class="bar-shell">
+                <div class="bar-fill gpu" data-field="gpuPowerBar"></div>
+              </div>
+              <span class="bar-value" data-field="gpuPower">--</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="power-card memory-card">
+          <header>
+            <h3>VRAM</h3>
+          </header>
+          <div class="memory-metric">
+            <strong data-field="gpuMemoryUsed">--</strong>
+            <span class="memory-total">of <span data-field="gpuMemoryTotal">--</span></span>
+          </div>
+          <div class="bar-shell large">
+            <div class="bar-fill memory" data-field="gpuMemoryBar"></div>
+          </div>
+          <div class="memory-foot">
+            <span>Free</span>
+            <span data-field="gpuMemoryFree">--</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="system-grid">
+        <article class="info-card" data-section="memory">
+          <header>
+            <h3>Memory</h3>
+            <span data-field="memoryLoad">--</span>
+          </header>
+          <div class="info-primary">
+            <strong data-field="memoryUsed">--</strong>
+            <span data-field="memoryTotal">--</span>
+          </div>
+          <div class="bar-shell large">
+            <div class="bar-fill memory" data-field="memoryBar"></div>
+          </div>
+          <div class="info-foot">
+            <span>Free</span>
+            <span data-field="memoryFree">--</span>
+          </div>
+        </article>
+
+        <article class="info-card" data-section="storage">
+          <header>
+            <h3>Storage</h3>
+            <span data-field="storageUsedPercent">--</span>
+          </header>
+          <div class="info-foot dual">
+            <div>
+              <span>Read</span>
+              <strong data-field="storageRead">--</strong>
+            </div>
+            <div>
+              <span>Write</span>
+              <strong data-field="storageWrite">--</strong>
+            </div>
+          </div>
+          <div class="info-foot">
+            <span>Temp</span>
+            <strong data-field="storageTemp">--</strong>
+          </div>
+        </article>
+
+        <article class="info-card" data-section="network">
+          <header class="network-header">
+            <h3>Network</h3>
+            <select id="nicSelect" class="compact-select"></select>
+          </header>
+          <div class="info-foot dual">
+            <div>
+              <span>Up</span>
+              <strong data-field="nicUpload">--</strong>
+            </div>
+            <div>
+              <span>Down</span>
+              <strong data-field="nicDownload">--</strong>
+            </div>
+          </div>
+          <div class="info-foot">
+            <span>Util</span>
+            <strong data-field="nicUtil">--</strong>
+          </div>
+        </article>
+      </section>
+
+      <section class="details-section">
+        <div class="collapsible" data-section="cpu">
+          <button class="collapsible-toggle">
+            <span>CPU detail</span>
+            <span class="chevron">▾</span>
+          </button>
+          <div class="collapsible-body" id="cpuDetailList"></div>
+        </div>
+
+        <div class="collapsible" data-section="gpu">
+          <button class="collapsible-toggle">
+            <span>GPU detail</span>
+            <span class="chevron">▾</span>
+          </button>
+          <div class="collapsible-body" id="gpuDetailList"></div>
+        </div>
+      </section>
+    </div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
