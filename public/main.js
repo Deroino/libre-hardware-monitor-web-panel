@@ -17,7 +17,8 @@ const refs = {
   dataUrlInput: document.getElementById('dataUrlInput'),
   dataUrlApply: document.getElementById('applyDataUrl'),
   themeSelect: document.getElementById('themeSelect'),
-  nicSelect: document.getElementById('nicSelect')
+  nicSelect: document.getElementById('nicSelect'),
+  fullscreenToggle: document.getElementById('fullscreenToggle')
 };
 
 const networkState = {
@@ -130,6 +131,20 @@ function registerPopover(toggle, panel) {
     }
   });
   panel.addEventListener('click', (event) => event.stopPropagation());
+}
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    // Enter fullscreen: request full screen for document.documentElement (i.e. <html>)
+    document.documentElement.requestFullscreen().catch(err => {
+      console.error(`Fullscreen request failed: ${err.message}`);
+    });
+  } else {
+    // Exit fullscreen
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
 }
 
 document.addEventListener('click', closeAllPopovers);
@@ -413,6 +428,10 @@ function setDataEndpoint(url) {
 function initControls() {
   registerPopover(refs.themeToggle, refs.themePanel);
   registerPopover(refs.settingsToggle, refs.settingsPanel);
+
+  if (refs.fullscreenToggle) {
+    refs.fullscreenToggle.addEventListener('click', toggleFullScreen);
+  }
 
   if (refs.slider) {
     refs.slider.addEventListener('input', (event) => {
