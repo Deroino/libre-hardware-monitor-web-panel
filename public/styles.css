@@ -198,10 +198,10 @@ input[type="number"] {
 }
 
 .gauge-card {
-  padding: 1.1rem;
+  padding: 0.6rem;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 0.5rem;
 }
 
 .panel-header {
@@ -249,8 +249,8 @@ input[type="number"] {
 
 .gauge {
   --value: 0;
-  width: 130px;
-  height: 130px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   background: conic-gradient(var(--accent) calc(var(--value) * 1%), rgba(255, 255, 255, 0.08) 0);
   display: flex;
@@ -265,7 +265,7 @@ input[type="number"] {
 .gauge::before {
   content: "";
   position: absolute;
-  inset: 15px;
+  inset: 10px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(0, 0, 0, 0.45);
@@ -278,12 +278,12 @@ input[type="number"] {
 }
 
 .gauge strong {
-  font-size: 1.7rem;
+  font-size: 1.3rem;
   letter-spacing: 0.1em;
 }
 
 .gauge span {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -295,7 +295,8 @@ input[type="number"] {
 }
 
 .readout-grid.tight {
-  grid-template-columns: repeat(2, minmax(100px, 1fr));
+  grid-template-columns: repeat(2, minmax(90px, 1fr));
+  gap: 0.4rem;
 }
 
 .readout-grid div {
